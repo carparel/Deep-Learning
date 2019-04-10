@@ -3,13 +3,13 @@ from torch import nn
 from torch.nn import functional as F
 
 
-""" DEEP 2 MODELS """
+""" CONV 2 MODELS """
     
 
-"""Model generation for deep model 2 (4 convolutional layers and 1 max pooling) without weight sharing and without auxiliary loss."""    
-class Deep_NOsharing_NOaux2(nn.Module):
+"""Model generation for conv model 2 (4 convolutional layers and 1 max pooling) without weight sharing and without auxiliary loss."""    
+class Conv_NOsharing_NOaux2(nn.Module):
     def __init__(self, hidden, act_fun):
-        super(Deep_NOsharing_NOaux2, self).__init__()
+        super(Conv_NOsharing_NOaux2, self).__init__()
         self.act_fun = act_fun
         self.conv1_1 = nn.Conv2d(1, 16, kernel_size=5)
         self.conv1_2 = nn.Conv2d(1, 16, kernel_size=5)
@@ -42,10 +42,10 @@ class Deep_NOsharing_NOaux2(nn.Module):
         return x
 
     
-"""Model generation for deep model 2 (4 convolutional layers and 1 max pooling) with weight sharing and without auxiliary loss."""  
-class Deep_sharing_NOaux2(nn.Module):
+"""Model generation for conv model 2 (4 convolutional layers and 1 max pooling) with weight sharing and without auxiliary loss."""  
+class Conv_sharing_NOaux2(nn.Module):
     def __init__(self, hidden, act_fun):
-        super(Deep_sharing_NOaux2, self).__init__()
+        super(Conv_sharing_NOaux2, self).__init__()
         self.act_fun = act_fun
         self.conv1 = nn.Conv2d(1, 16, kernel_size=5)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3)
@@ -72,10 +72,10 @@ class Deep_sharing_NOaux2(nn.Module):
         return x
 
     
-"""Model generation for deep model 2 (4 convolutional layers and 1 max pooling) without weight sharing and with auxiliary loss."""  
-class Deep_NOsharing_aux2(nn.Module):
+"""Model generation for conv model 2 (4 convolutional layers and 1 max pooling) without weight sharing and with auxiliary loss."""  
+class Conv_NOsharing_aux2(nn.Module):
     def __init__(self, hidden, act_fun):
-        super(Deep_NOsharing_aux2, self).__init__()
+        super(Conv_NOsharing_aux2, self).__init__()
         self.act_fun = act_fun
         self.conv1_1 = nn.Conv2d(1, 16, kernel_size=5)
         self.conv1_2 = nn.Conv2d(1, 16, kernel_size=5)
@@ -115,10 +115,10 @@ class Deep_NOsharing_aux2(nn.Module):
         return x, aux1, aux2
 
     
-"""Model generation for deep model 2 (4 convolutional layers and 1 max pooling) with weight sharing and with auxiliary loss."""  
-class Deep_sharing_aux2(nn.Module):
+"""Model generation for conv model 2 (4 convolutional layers and 1 max pooling) with weight sharing and with auxiliary loss."""  
+class Conv_sharing_aux2(nn.Module):
     def __init__(self, hidden, act_fun):
-        super(Deep_sharing_aux2, self).__init__()
+        super(Conv_sharing_aux2, self).__init__()
         self.act_fun = act_fun
         self.conv1 = nn.Conv2d(1, 16, kernel_size=5)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3)

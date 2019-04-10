@@ -1,8 +1,8 @@
 import torch
 from modelsShallow import *
 from modelsMLP import *
-from modelsDeep1 import *
-from modelsDeep2 import *
+from modelsConv1 import *
+from modelsConv2 import *
 import dlc_practical_prologue as prologue
 
 
@@ -88,24 +88,24 @@ def model_training(input_, target, classes, hidden_units, eta, lambda_, model_ty
             model = MLP_NOsharing_aux(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'sharing_aux'):
             model = MLP_sharing_aux(hidden = hidden_units, act_fun = F.relu)
-    elif(model_type == 'Deep1'):
+    elif(model_type == 'Conv1'):
         if(sub_model == 'NOsharing_NOaux'):
-            model = Deep_NOsharing_NOaux(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_NOsharing_NOaux(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'sharing_NOaux'):
-            model = Deep_sharing_NOaux(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_sharing_NOaux(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'NOsharing_aux'):
-            model = Deep_NOsharing_aux(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_NOsharing_aux(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'sharing_aux'):
-            model = Deep_sharing_aux(hidden = hidden_units, act_fun = F.relu)
-    elif(model_type == 'Deep2'):
+            model = Conv_sharing_aux(hidden = hidden_units, act_fun = F.relu)
+    elif(model_type == 'Conv2'):
         if(sub_model == 'NOsharing_NOaux'):
-            model = Deep_NOsharing_NOaux2(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_NOsharing_NOaux2(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'sharing_NOaux'):
-            model = Deep_sharing_NOaux2(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_sharing_NOaux2(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'NOsharing_aux'):
-            model = Deep_NOsharing_aux2(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_NOsharing_aux2(hidden = hidden_units, act_fun = F.relu)
         elif(sub_model == 'sharing_aux'):
-            model = Deep_sharing_aux2(hidden = hidden_units, act_fun = F.relu)
+            model = Conv_sharing_aux2(hidden = hidden_units, act_fun = F.relu)
                 
     if(sub_model == 'NOsharing_aux' or sub_model == 'sharing_aux'): 
         train_model_aux(model, input_[:700], target[:700], classes[:700], nb_epochs, mini_batch_size, criterion, eta, lambda_)
@@ -121,8 +121,8 @@ def model_training(input_, target, classes, hidden_units, eta, lambda_, model_ty
 def create_dict():
     results = {'Shallow':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}},
                'MLP':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}},  
-               'Deep1':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}},
-               'Deep2':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}}  
+               'Conv1':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}},
+               'Conv2':{'NOsharing_NOaux':{}, 'sharing_NOaux':{}, 'NOsharing_aux':{}, 'sharing_aux':{}}  
               }
     return results
 
@@ -139,7 +139,7 @@ def fill_results(results, type_model, sub_model, acc, eta, hidden, lambda_):
 
 """Function to perform a grid search over hyper-parameters to find the combination that gives the best accuracy"""
 def grid_search_(lambdas, etas, hidden_units, train_input, train_target, train_classes, test_input, test_target):
-    type_models = ['Shallow', 'MLP', 'Deep1', 'Deep2']
+    type_models = ['Shallow', 'MLP', 'Conv1', 'Conv2']
     sub_models = ['NOsharing_NOaux', 'sharing_NOaux', 'NOsharing_aux', 'sharing_aux']
     acc_test = torch.zeros(len(type_models),len(sub_models))
     results = create_dict()

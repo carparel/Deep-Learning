@@ -3,7 +3,7 @@ import torch
 
 
 # Instanciate the models to be tested and get the hyper-parameters
-type_models = ['Shallow', 'MLP', 'Deep1', 'Deep2']
+type_models = ['Shallow', 'MLP', 'Conv1', 'Conv2']
 sub_models = ['NOsharing_NOaux', 'sharing_NOaux', 'NOsharing_aux', 'sharing_aux']
 HP = eval(open('HP.txt', 'r').read())
 
