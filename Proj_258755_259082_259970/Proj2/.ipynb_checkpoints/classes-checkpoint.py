@@ -196,7 +196,9 @@ class Sequential(Module):
         self.modules = []
         self.forward = None
         self.backward = None
+        print('Sequential module composition:')
         for module in args:
+            print(type(module).__name__)
             self.modules.append(module)
     
     """Function to compute the forward pass of the modules contained in the sequential."""
@@ -225,4 +227,4 @@ class Sequential(Module):
     def update(self, eta):
         for module in self.modules:
             if(len(module.param()) > 0):
-                module.update(eta) # Maybe we should change eta over time 
+                module.update(eta)
