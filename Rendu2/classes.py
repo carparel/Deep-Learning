@@ -1,4 +1,7 @@
+from utilities import d_LossMSE
+
 import torch
+import math
 
 
 """Super class of a module from which the other will inherit."""
@@ -95,12 +98,12 @@ class ReLU(Module):
     """Function to compute the forward pass of a ReLU module."""
     def forward_pass(self, _input_):
         self.cache_input_linear = _input_
-        x = self.ReLU_fun(_input_) #100 x 25
+        x = self.ReLU_fun(_input_)
         return x
 
     """Function to compute the forward pass of a ReLU module."""
     def backward_pass(self, gradwrtoutput):
-        dl_ds =  self.d_ReLU(self.cache_input_linear) * gradwrtoutput # 100 x 2
+        dl_ds =  self.d_ReLU(self.cache_input_linear) * gradwrtoutput
         self.cache_input_linear = None
         return dl_ds
         
@@ -124,12 +127,12 @@ class Tanh(Module):
     """Function to compute the forward pass of a Tanh module."""
     def forward_pass(self, _input_):
         self.cache_input_linear = _input_
-        x = self.Tanh_fun(_input_) #100 x 25
+        x = self.Tanh_fun(_input_)
         return x
    
     """Function to compute the backward pass of a Tanh module."""
     def backward_pass(self, gradwrtoutput):
-        dl_ds =  self.d_Tanh(self.cache_input_linear) * gradwrtoutput # 100 x 2
+        dl_ds =  self.d_Tanh(self.cache_input_linear) * gradwrtoutput
         self.cache_input_linear = None
         return dl_ds
 
@@ -153,12 +156,12 @@ class Sigmoid(Module):
     """Function to compute the forward pass of a Sigmoid module."""
     def forward_pass(self, _input_):
         self.cache_input_linear = _input_
-        x = self.Sigmoid_fun(_input_) #100 x 25
+        x = self.Sigmoid_fun(_input_)
         return x
    
     """Function to compute the backward pass of a Sigmoid module."""
     def backward_pass(self, gradwrtoutput):
-        dl_ds =  self.d_Sigmoid(self.cache_input_linear) * gradwrtoutput # 100 x 2
+        dl_ds =  self.d_Sigmoid(self.cache_input_linear) * gradwrtoutput
         self.cache_input_linear = None
         return dl_ds
     
@@ -181,3 +184,40 @@ class Dropout(Module):
     "Function to compute the gradient during the backward pass."
     def backward_pass(self, gradwrtoutput):
         return gradwrtoutput * self.prob 
+
+
+"""Sequential module to combine several modules of a neural network."""
+class Sequential(Module):
+    
+    """Function to initiate the Sequential module."""
+    def __init__(self, *args):
+        super(Sequential, self).__init__()
+        self.modules = []
+        self.forward = None
+        self.backward = None
+        for module in args:
+            self.modules.append(module)
+    
+    """Function to compute the forward pass of the modules contained in the sequential."""
+    def forward_pass(self, _input_):
+        self.forward = _input_
+        for module in self.modules:
+            self.forward = module.forward_pass(self.forward)
+        return self.forward
+  
+    """Function to compute the backward pass of the modules contained in the sequential."""
+    def backward_pass(self, target):
+        self.backward = d_LossMSE(self.forward, target)
+        for module in reversed(self.modules):
+            self.backward = module.backward_pass(self.backward)
+    
+    """Function to reset the gradients of the modules contained in the sequential."""
+    def zerograd(self):
+        for module in self.modules:
+            module.zerograd()
+            
+    """Function to udate the parameters of the modules contained in the sequential."""
+    def update(self, eta):
+        for module in self.modules:
+            if(len(module.param()) > 0):
+                module.update(eta) # Maybe we should change eta over time 

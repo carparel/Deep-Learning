@@ -1,5 +1,5 @@
 import torch
-
+import math
 
 """Function to generate a circular dataset."""
 def generate_disc_set(nb):
