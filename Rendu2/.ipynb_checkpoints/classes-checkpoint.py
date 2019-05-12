@@ -37,19 +37,20 @@ class Linear(Module):
         self.in_features = in_features
         self.out_features = out_features
         
-        self.Xavier_Normalization(in_features, out_features)
+        self.Xavier_initialization(in_features, out_features)
+        
+        std_init_b = 1/math.sqrt(self.w.size(1))
+        self.b = torch.empty(out_features).uniform_(-std_init_b,std_init_b)
         
         self.dl_dw = torch.zeros(self.w.size())
         self.dl_db = torch.zeros(self.b.size())
         
         self.cache_input_act = None
     
-    """Xavier Normalization used to initialize the weigths and bias."""
-    def Xavier_Normalization(self, in_features, out_features):
+    """Xavier initialization used to initialize the weigths and bias."""
+    def Xavier_initialization(self, in_features, out_features):
         std_init_w = math.sqrt(2/(self.in_features + self.out_features))
         self.w = torch.empty(out_features,in_features).normal_(0,std_init_w)
-        std_init_b = 1/math.sqrt(self.w.size(1))
-        self.b = torch.empty(out_features).uniform_(-std_init_b,std_init_b)
     
     """Function to compute the forward pass of a linear module."""
     def forward_pass(self, _input_):
@@ -199,10 +200,14 @@ class Sequential(Module):
             self.modules.append(module)
     
     """Function to compute the forward pass of the modules contained in the sequential."""
-    def forward_pass(self, _input_):
+    def forward_pass(self, _input_, training = True):
         self.forward = _input_
         for module in self.modules:
-            self.forward = module.forward_pass(self.forward)
+            if training:
+                self.forward = module.forward_pass(self.forward)
+            else: 
+                if not isinstance(module, Dropout):
+                    self.forward = module.forward_pass(self.forward)
         return self.forward
   
     """Function to compute the backward pass of the modules contained in the sequential."""

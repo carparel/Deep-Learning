@@ -39,7 +39,7 @@ def train_model_aux(model, train_input, train_target, train_classes, nb_epochs, 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-  
+
 
 """Function to compute the number of error for a model without auxiliary loss."""   
 def compute_nb_errors_NOaux(model, data_input, data_target, mini_batch_size): 

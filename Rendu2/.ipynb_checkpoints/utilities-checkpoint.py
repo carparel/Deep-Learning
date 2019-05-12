@@ -1,6 +1,7 @@
 import torch
 import math
 
+
 """Function to generate a circular dataset."""
 def generate_disc_set(nb):
     input_ = torch.empty(nb, 2).uniform_(0,1)
