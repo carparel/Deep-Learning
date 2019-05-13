@@ -17,3 +17,4 @@ HP = grid_search_(lambdas, etas, hidden_units, train_input, train_target, train_
 f = open("HP.txt","w")
 f.write( str(HP) )
 f.close()
+print('Results are saved in the file HP.txt')

@@ -39,10 +39,11 @@ for j in range(n_iter):
 # To print the results
 mean_acc = torch.mean(all_values, 0)
 std_acc = torch.std(all_values, 0)
-for i in range(n_iter):
-    for t, type_model in enumerate(type_models):
-        for s, sub_model in enumerate(sub_models):
-            print('Mean accuracy of ',mean_acc[i], 'and std of ',std_acc[i], 'for the', type_model, sub_model)
+
+for t, type_model in enumerate(type_models):
+	for s, sub_model in enumerate(sub_models):
+		print(type_model, sub_model, ': Mean accuracy of', mean_acc[t,s].item(), 'and std of', std_acc[t,s].item())
+
 # Save results
 f = open("results.txt","w")
 f.write( str(all_values) )
