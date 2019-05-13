@@ -1,14 +1,14 @@
 from utilities import *
 import torch
 
-print('If you want to do the parameter optimization run the gridSearch() before!')
+print('If you want to do the parameter optimization run gridSearch.py before.')
 
 # Instanciate the models to be tested and get the hyper-parameters
 type_models = ['Shallow', 'MLP', 'Conv1', 'Conv2']
 sub_models = ['NOsharing_NOaux', 'sharing_NOaux', 'NOsharing_aux', 'sharing_aux']
 HP = eval(open('HP.txt', 'r').read())
 
-n_iter = 2
+n_iter = 10
 nbr_pairs = 1000
 all_values = torch.zeros(n_iter,len(type_models),len(sub_models))
 
@@ -48,5 +48,5 @@ for t, type_model in enumerate(type_models):
 f = open("results.txt","w")
 f.write( str(all_values) )
 f.close()
-print('Results are saved in the file results.txt')
+print('Results of all iteration are saved in the file results.txt')
 
